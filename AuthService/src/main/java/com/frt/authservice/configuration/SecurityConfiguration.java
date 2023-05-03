@@ -10,13 +10,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.security.SecureRandom;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        int strength = 10;
+        SecureRandom secureRandom = new SecureRandom();
+        return new BCryptPasswordEncoder(strength, secureRandom);
     }
 
 //    @Bean
@@ -34,7 +38,6 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionCustomizer -> sessionCustomizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeCustomizer -> {
-                    // swagger and openapi
                     authorizeCustomizer.anyRequest().permitAll();
                 });
 

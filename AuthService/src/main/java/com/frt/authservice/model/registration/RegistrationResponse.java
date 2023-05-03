@@ -1,4 +1,4 @@
-package com.frt.authservice.model;
+package com.frt.authservice.model.registration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

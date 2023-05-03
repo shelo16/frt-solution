@@ -1,6 +1,7 @@
-package com.frt.authservice.model;
+package com.frt.authservice.model.registration;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.frt.authservice.exception.model.password.ValidPassword;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RegistrationRequest {
 
+    @NotEmpty(message = "Email should not be empty")
     private String email;
+
+    @ValidPassword
     private String password;
 
 }
