@@ -27,7 +27,7 @@ public class ControllerAspect {
 
     private final JwtUtil jwtUtil;
 
-    @Pointcut("execution(* com.frt.authservice.controller.user.*.*(..))")
+    @Pointcut("within(com.frt.authservice.controller.user.UserController)")
     public void userControllerMethods() {
     }
 
