@@ -1,7 +1,7 @@
 package com.frt.authservice.configuration.filter;
 
+import com.frt.authservice.service.impl.user.CustomUserDetailsService;
 import com.frt.authservice.service.util.JwtUtil;
-import com.frt.authservice.service.impl.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +34,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String userEmail;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request,response);
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -48,7 +48,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                                 userDetails,
                                 null,
                                 userDetails.getAuthorities()
-                                );
+                        );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }

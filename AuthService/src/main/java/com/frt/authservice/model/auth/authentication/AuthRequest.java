@@ -1,4 +1,4 @@
-package com.frt.authservice.model.authentication;
+package com.frt.authservice.model.auth.authentication;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;

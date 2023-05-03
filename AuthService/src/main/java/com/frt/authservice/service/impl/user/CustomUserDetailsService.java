@@ -1,4 +1,4 @@
-package com.frt.authservice.service.impl;
+package com.frt.authservice.service.impl.user;
 
 import com.frt.authservice.persistence.entity.FrtUser;
 import com.frt.authservice.persistence.repository.FrtUserRepository;

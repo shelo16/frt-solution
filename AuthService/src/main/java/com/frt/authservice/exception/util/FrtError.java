@@ -12,7 +12,12 @@ public enum FrtError {
     BAD_CREDENTIALS("Email or password incorrect", HttpStatus.FORBIDDEN),
     USER_ALREADY_EXISTS("User with this email already exists", HttpStatus.BAD_REQUEST),
     USER_SESSION_EXPIRED("Session expired, please re-login", HttpStatus.UNAUTHORIZED),
-    BAD_PASSWORD("Password must be between 8 and 20 characters long and contain at least one digit, lowercase letter, uppercase letter, and special character.", HttpStatus.BAD_REQUEST);
+    USER_NOT_FOUND("User couldn't be found with given parameters", HttpStatus.NOT_FOUND),
+    USER_NO_CHANGES_DETECTED("User is already in desired state", HttpStatus.CONFLICT),
+    BAD_PASSWORD("Password must be between 8 and 20 characters long and contain at least one digit, lowercase letter, uppercase letter, and special character.", HttpStatus.BAD_REQUEST),
+    ROLE_NOT_FOUND("Role parameter is invalid", HttpStatus.BAD_REQUEST),
+    SAME_PASSWORD_UPDATE("Password must be different when updating", HttpStatus.CONFLICT),
+    SAME_EMAIL_UPDATE("Email must be different when updating", HttpStatus.CONFLICT);
 
     private final String description;
     private final HttpStatus status;

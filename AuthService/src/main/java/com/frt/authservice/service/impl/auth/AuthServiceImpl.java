@@ -1,25 +1,21 @@
-package com.frt.authservice.service.impl;
+package com.frt.authservice.service.impl.auth;
 
 import com.frt.authservice.exception.model.customexception.GeneralException;
 import com.frt.authservice.exception.util.FrtError;
-import com.frt.authservice.model.AuthResponse;
-import com.frt.authservice.model.authentication.AuthRequest;
-import com.frt.authservice.model.registration.RegistrationRequest;
+import com.frt.authservice.model.auth.AuthResponse;
+import com.frt.authservice.model.auth.authentication.AuthRequest;
+import com.frt.authservice.model.auth.registration.RegistrationRequest;
 import com.frt.authservice.persistence.entity.FrtUser;
 import com.frt.authservice.persistence.repository.FrtUserRepository;
-import com.frt.authservice.service.AuthService;
+import com.frt.authservice.service.auth.AuthService;
 import com.frt.authservice.service.util.FrtSuccess;
 import com.frt.authservice.service.util.JwtUtil;
-import com.frt.authservice.service.util.UriLocationBuilder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.net.URI;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public ResponseEntity<AuthResponse> register(RegistrationRequest registrationRequest) {
+    public AuthResponse register(RegistrationRequest registrationRequest) {
 
         frtUserRepository.findByEmail(registrationRequest.getEmail())
                 .ifPresent(user -> {
@@ -40,20 +36,18 @@ public class AuthServiceImpl implements AuthService {
 
         FrtUser savedUser = frtUserRepository.save(buildUser(registrationRequest));
 
-        URI location = UriLocationBuilder.buildUri("/user/{id}", savedUser.getUserId());
 
         var token = jwtUtil.generateToken(savedUser);
 
-        return ResponseEntity
-                .created(location)
-                .body(new AuthResponse(
-                        FrtSuccess.CREATED.getDescription(),
-                        token)
-                );
+        return AuthResponse.builder()
+                .token(token)
+                .message(FrtSuccess.OK.getDescription())
+                .frtUserId(savedUser.getUserId())
+                .build();
     }
 
     @Override
-    public ResponseEntity<AuthResponse> authenticate(AuthRequest authRequest) {
+    public AuthResponse authenticate(AuthRequest authRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authRequest.getEmail(),
@@ -62,12 +56,14 @@ public class AuthServiceImpl implements AuthService {
 
         var user = frtUserRepository.findByEmail(authRequest.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException(FrtError.INVALID_REQUEST.getDescription()));
-        var jwtToken = jwtUtil.generateToken(user);
-        return ResponseEntity
-                .ok(AuthResponse.builder()
-                        .token(jwtToken)
-                        .message(FrtSuccess.OK.getDescription())
-                        .build());
+
+        var token = jwtUtil.generateToken(user);
+
+        return AuthResponse.builder()
+                .token(token)
+                .message(FrtSuccess.OK.getDescription())
+                .frtUserId(user.getUserId())
+                .build();
     }
 
     private FrtUser buildUser(RegistrationRequest registrationRequest) {

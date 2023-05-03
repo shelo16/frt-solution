@@ -3,7 +3,7 @@ package com.frt.authservice.configuration;
 
 import com.frt.authservice.configuration.filter.JwtRequestFilter;
 import com.frt.authservice.persistence.util.Role;
-import com.frt.authservice.service.impl.CustomUserDetailsService;
+import com.frt.authservice.service.impl.user.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

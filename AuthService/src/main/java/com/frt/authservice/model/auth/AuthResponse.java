@@ -1,4 +1,4 @@
-package com.frt.authservice.model;
+package com.frt.authservice.model.auth;
 
 import lombok.*;
 
@@ -11,5 +11,6 @@ public class AuthResponse {
 
     private String message;
     private String token;
+    private Long frtUserId;
 
 }
