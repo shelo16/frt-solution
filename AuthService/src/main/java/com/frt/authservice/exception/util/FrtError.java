@@ -17,7 +17,8 @@ public enum FrtError {
     BAD_PASSWORD("Password must be between 8 and 20 characters long and contain at least one digit, lowercase letter, uppercase letter, and special character.", HttpStatus.BAD_REQUEST),
     ROLE_NOT_FOUND("Role parameter is invalid", HttpStatus.BAD_REQUEST),
     SAME_PASSWORD_UPDATE("Password must be different when updating", HttpStatus.CONFLICT),
-    SAME_EMAIL_UPDATE("Email must be different when updating", HttpStatus.CONFLICT);
+    SAME_EMAIL_UPDATE("Email must be different when updating", HttpStatus.CONFLICT),
+    USER_ACCESS_DENIED("Response data doesn't belong to this user. Access Denied", HttpStatus.FORBIDDEN);
 
     private final String description;
     private final HttpStatus status;

@@ -1,5 +1,6 @@
 package com.frt.authservice.service.util;
 
+import com.frt.authservice.persistence.entity.FrtUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -38,8 +39,12 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return this.generateToken(new HashMap<>(), userDetails);
+    public String generateToken(FrtUser userDetails) {
+
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("id", userDetails.getUserId());
+
+        return this.generateToken(extraClaims, userDetails);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {

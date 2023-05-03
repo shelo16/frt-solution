@@ -23,7 +23,7 @@ public class UserController {
         return ResponseEntity.ok(frtUserService.getUser(id));
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/deactivate/{id}")
     public ResponseEntity<UpdateFrtUserResponse> deactivateUser(@PathVariable @NotNull @Min(1) Long id) {
         return ResponseEntity.ok(frtUserService.deactivateUser(id));
     }

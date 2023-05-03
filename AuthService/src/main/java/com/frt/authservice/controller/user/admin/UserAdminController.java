@@ -19,12 +19,12 @@ public class UserAdminController {
 
     private final FrtUserService frtUserService;
 
-    @GetMapping
+    @GetMapping(params = "email")
     public ResponseEntity<FrtUserDto> getUserByEmail(@RequestParam String email) {
         return ResponseEntity.ok(frtUserService.getUserByEmail(email));
     }
 
-    @GetMapping
+    @GetMapping(params = "status")
     public ResponseEntity<List<FrtUserDto>> getUsersByStatus(@RequestParam boolean status) {
         return ResponseEntity.ok(frtUserService.getUsersByStatus(status));
     }
@@ -40,7 +40,7 @@ public class UserAdminController {
         return ResponseEntity.ok(frtUserService.updateUserRole(id, role));
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/activate/{id}")
     public ResponseEntity<UpdateFrtUserResponse> activateUser(@PathVariable @NotNull @Min(1) Long id) {
         return ResponseEntity.ok(frtUserService.activateUser(id));
     }
