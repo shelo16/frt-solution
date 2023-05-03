@@ -13,7 +13,6 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -89,6 +88,7 @@ public class ControllerAspect {
             throw new GeneralException(FrtError.USER_ACCESS_DENIED);
         }
     }
+
     private void checkValidEmail(String emailToken, String emailUser) {
         if (!Objects.equals(emailToken, emailUser)) {
             throw new GeneralException(FrtError.USER_ACCESS_DENIED);
