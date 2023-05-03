@@ -1,7 +1,8 @@
 package com.frt.authservice.controller;
 
+import com.frt.authservice.model.AuthResponse;
+import com.frt.authservice.model.authentication.AuthRequest;
 import com.frt.authservice.model.registration.RegistrationRequest;
-import com.frt.authservice.model.registration.RegistrationResponse;
 import com.frt.authservice.service.AuthService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -20,8 +21,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegistrationResponse> register(@Valid @RequestBody @NotNull RegistrationRequest registrationRequest) {
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody @NotNull RegistrationRequest registrationRequest) {
         return authService.register(registrationRequest);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody @NotNull AuthRequest authRequest) {
+        return authService.authenticate(authRequest);
     }
 
 
