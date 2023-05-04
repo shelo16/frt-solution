@@ -41,11 +41,12 @@ public class ProductServiceImpl implements ProductService {
     public ProductFilterResponse filter(String productName,
                                         BigDecimal priceFrom,
                                         BigDecimal priceTo,
+                                        Long categoryId,
                                         int page,
                                         int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Product> productList = productRepository.findAll(pageable, productName, priceFrom, priceTo);
+        Page<Product> productList = productRepository.findAll(pageable, productName, priceFrom, priceTo, categoryId);
         List<ProductResponse> productResponseList = productList.stream()
                 .map(ProductResponse::transformEntityToResponse).toList();
 

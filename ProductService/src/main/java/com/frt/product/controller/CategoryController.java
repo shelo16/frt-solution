@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/category")
 public class CategoryController {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @GetMapping
     public ResponseEntity<List<CategoryResponse>> findAll() {

@@ -26,9 +26,10 @@ public class ProductController {
     public ResponseEntity<ProductFilterResponse> filterProducts(@RequestParam(required = false) String productName,
                                                                 @RequestParam(required = false) BigDecimal priceFrom,
                                                                 @RequestParam(required = false) BigDecimal priceTo,
+                                                                @RequestParam(required = false) Long categoryId,
                                                                 @RequestParam int page,
                                                                 @RequestParam int size) {
-        return ResponseEntity.ok(productService.filter(productName, priceFrom, priceTo, page, size));
+        return ResponseEntity.ok(productService.filter(productName, priceFrom, priceTo, categoryId, page, size));
     }
 
 

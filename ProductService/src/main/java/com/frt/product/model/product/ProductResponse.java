@@ -1,5 +1,6 @@
 package com.frt.product.model.product;
 
+import com.frt.product.model.category.CategoryResponse;
 import com.frt.product.persistence.entity.Product;
 import com.frt.product.persistence.util.Status;
 import lombok.*;
@@ -18,6 +19,7 @@ public class ProductResponse {
     private Integer quantity;
     private BigDecimal price;
     private Status status;
+    private CategoryResponse categoryResponse;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -27,6 +29,7 @@ public class ProductResponse {
                 .quantity(product.getQuantity())
                 .price(product.getPrice())
                 .status(product.getStatus())
+                .categoryResponse(CategoryResponse.transformEntityToResponse(product.getCategory()))
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
                 .build();

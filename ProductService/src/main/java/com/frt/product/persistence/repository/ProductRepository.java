@@ -16,10 +16,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE (:productName IS NULL OR p.productName LIKE CONCAT('%', :productName, '%')) " +
             "AND (:priceFrom IS NULL OR p.price >= :priceFrom) " +
             "AND (:priceTo IS NULL OR p.price <= :priceTo) " +
+            "AND (:categoryId IS NULL OR p.category.id = :categoryId) " +
             "ORDER BY p.productName ASC")
     Page<Product> findAll(@NonNull Pageable pageable,
                           @Param("productName") String productName,
                           @Param("priceFrom") BigDecimal priceFrom,
-                          @Param("priceTo") BigDecimal priceTo);
+                          @Param("priceTo") BigDecimal priceTo,
+                          @Param("categoryId") Long categoryId);
 
 }

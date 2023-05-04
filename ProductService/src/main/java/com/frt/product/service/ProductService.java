@@ -9,6 +9,6 @@ public interface ProductService {
 
     ProductResponse findById(Long productId);
 
-    ProductFilterResponse filter(String productName, BigDecimal priceFrom, BigDecimal priceTo, int page, int size);
+    ProductFilterResponse filter(String productName, BigDecimal priceFrom, BigDecimal priceTo, Long categoryId, int page, int size);
 
 }
