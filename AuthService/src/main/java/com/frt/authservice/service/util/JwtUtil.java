@@ -1,11 +1,10 @@
 package com.frt.authservice.service.util;
 
 import com.frt.authservice.persistence.entity.FrtUser;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +15,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
+@Slf4j
 public class JwtUtil {
 
     // TODO move to env variables
@@ -26,8 +26,15 @@ public class JwtUtil {
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+        try {
+
+            Claims claims = extractAllClaims(token);
+            return claimsResolver.apply(claims);
+
+        } catch (ExpiredJwtException e) {
+            log.error(e.getMessage());
+        }
+        return null;
     }
 
     private Claims extractAllClaims(String token) {

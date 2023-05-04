@@ -10,21 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
 public class CustomControllerAdvice {
-
-    @ExceptionHandler(GeneralException.class)
-    public ResponseEntity<?> handleCustomException(GeneralException e) {
-        log.error(e.getFrtError().getDescription());
-        return new ResponseEntity<>(new GeneralExceptionResponse(List.of(e.getFrtError().getDescription())), e.getFrtError().getStatus());
-    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<GeneralExceptionResponse> handleMethodArgumentException(MethodArgumentNotValidException e) {
@@ -46,7 +40,13 @@ public class CustomControllerAdvice {
     @ExceptionHandler(JwtException.class)
     public ResponseEntity<GeneralExceptionResponse> handleAuthenticationError(JwtException e) {
         log.error(e.getMessage());
-        return new ResponseEntity<>(new GeneralExceptionResponse(List.of(FrtError.BAD_CREDENTIALS.getDescription())), FrtError.BAD_CREDENTIALS.getStatus());
+        return new ResponseEntity<>(new GeneralExceptionResponse(List.of(FrtError.USER_SESSION_EXPIRED.getDescription())), FrtError.BAD_CREDENTIALS.getStatus());
+    }
+
+    @ExceptionHandler(GeneralException.class)
+    public ResponseEntity<?> handleCustomException(GeneralException e) {
+        log.error(e.getFrtError().getDescription());
+        return new ResponseEntity<>(new GeneralExceptionResponse(List.of(e.getFrtError().getDescription())), e.getFrtError().getStatus());
     }
 
     @ExceptionHandler(Exception.class)
