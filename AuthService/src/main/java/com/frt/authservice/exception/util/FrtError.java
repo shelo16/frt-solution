@@ -12,6 +12,7 @@ public enum FrtError {
     BAD_CREDENTIALS("Email or password incorrect", HttpStatus.FORBIDDEN),
     USER_ALREADY_EXISTS("User with this email already exists", HttpStatus.BAD_REQUEST),
     USER_SESSION_EXPIRED("Session expired, please re-login", HttpStatus.UNAUTHORIZED),
+    USER_NOT_AUTHENTICATED("User should be authenticated to access this data", HttpStatus.FORBIDDEN),
     USER_NOT_FOUND("User couldn't be found with given parameters", HttpStatus.NOT_FOUND),
     USER_NO_CHANGES_DETECTED("User is already in desired state", HttpStatus.CONFLICT),
     NOTHING_TO_UPDATE("No changed fields detected", HttpStatus.BAD_REQUEST),
