@@ -45,6 +45,7 @@ public class ControllerAspect {
         HttpServletRequest request = attributes != null ? attributes.getRequest() : null;
         if (request != null) {
             log.info("================Received Http Request================");
+            log.info("SERVICE : AuthService");
             log.info("HTTP METHOD = {}", request.getMethod());
             log.info("URI = {}", request.getRequestURI());
             log.info("QUERY = {}", request.getQueryString());
