@@ -1,6 +1,5 @@
 package com.frt.authservice.model.user;
 
-import com.frt.authservice.exception.model.password.ValidPassword;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -14,11 +13,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UpdateFrtUserRequest {
 
-    @Email
     @Nullable
+    @Email
     private String email;
 
-    @ValidPassword
     @Nullable
     private String password;
 

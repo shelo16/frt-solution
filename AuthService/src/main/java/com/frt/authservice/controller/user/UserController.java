@@ -29,8 +29,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UpdateFrtUserResponse> updateUser(@PathVariable @NotNull @Min(1) Long id,
-                                                            @RequestBody @Valid UpdateFrtUserRequest updateFrtUserRequest) {
+    public ResponseEntity<UpdateFrtUserResponse> updateUser(@PathVariable @NotNull @Min(1) Long id, @Valid @RequestBody UpdateFrtUserRequest updateFrtUserRequest) {
         return ResponseEntity.ok(frtUserService.updateUser(id, updateFrtUserRequest));
     }
 

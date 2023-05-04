@@ -23,4 +23,11 @@ public class PasswordValidator implements ConstraintValidator<ValidPassword, Str
         }
         return true;
     }
+
+    public static void isValidPasswordGlobalUse(String password) {
+        boolean isValid = password != null && password.matches(PASSWORD_REGEX);
+        if (!isValid) {
+            throw new GeneralException(FrtError.BAD_PASSWORD);
+        }
+    }
 }

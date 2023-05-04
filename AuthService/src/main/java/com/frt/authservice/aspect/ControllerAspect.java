@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -31,7 +32,6 @@ public class ControllerAspect {
     public void userControllerMethods() {
     }
 
-    // TODO : Ignore this validation if user Role is ADmin
     @Before("userControllerMethods()")
     public void validateUserBeforeInvokingUserOperations(JoinPoint joinPoint) throws AuthenticationException {
 
@@ -51,12 +51,12 @@ public class ControllerAspect {
         }
 
         jwt = authHeader.substring(7);
-        if (jwt.isEmpty()) {
+        if (!StringUtils.hasLength(jwt)) {
             return;
         }
 
         role = jwtUtil.extractClaim(jwt, claims -> claims.get("role", String.class));
-        if (role.equalsIgnoreCase(Role.ADMIN.name())) {
+        if (StringUtils.hasLength(role) && role.equalsIgnoreCase(Role.ADMIN.name())) {
             return;
         }
 

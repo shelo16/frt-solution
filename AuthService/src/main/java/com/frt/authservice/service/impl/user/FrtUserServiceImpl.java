@@ -1,6 +1,7 @@
 package com.frt.authservice.service.impl.user;
 
 import com.frt.authservice.exception.model.customexception.GeneralException;
+import com.frt.authservice.exception.model.password.PasswordValidator;
 import com.frt.authservice.exception.util.FrtError;
 import com.frt.authservice.model.user.FrtUserDto;
 import com.frt.authservice.model.user.UpdateFrtUserRequest;
@@ -12,8 +13,9 @@ import com.frt.authservice.service.user.FrtUserService;
 import com.frt.authservice.service.util.FrtSuccess;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class FrtUserServiceImpl implements FrtUserService {
 
     private final FrtUserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public FrtUserDto getUser(Long frtUserId) {
@@ -85,9 +88,9 @@ public class FrtUserServiceImpl implements FrtUserService {
     @Override
     public UpdateFrtUserResponse updateUser(Long frtUserId, UpdateFrtUserRequest updateFrtuserRequest) {
         FrtUser frtUser = getFrtUserById(frtUserId);
-        validateUserUpdate(updateFrtuserRequest, frtUser);
-        BeanUtils.copyProperties(updateFrtuserRequest, frtUser);
+        frtUser = validateUserUpdate(updateFrtuserRequest, frtUser);
 
+//        userRepository.save(frtUser);
         return UpdateFrtUserResponse.builder()
                 .frtUserId(frtUserId)
                 .message(FrtSuccess.OK.getDescription())
@@ -112,17 +115,33 @@ public class FrtUserServiceImpl implements FrtUserService {
                 .build();
     }
 
-    private void validateUserUpdate(UpdateFrtUserRequest updateFrtuserRequest, FrtUser frtUser) {
-        if (!updateFrtuserRequest.getPassword().isEmpty()) {
-            if (frtUser.getPassword().equals(updateFrtuserRequest.getPassword())) {
-                throw new GeneralException(FrtError.SAME_PASSWORD_UPDATE);
-            }
+    private FrtUser validateUserUpdate(UpdateFrtUserRequest request, FrtUser frtUser) {
+
+        String requestedEmail = request.getEmail();
+        String requestedPassword = request.getPassword();
+
+        if (!StringUtils.hasLength(requestedPassword) && !StringUtils.hasLength(requestedEmail)) {
+            throw new GeneralException(FrtError.NOTHING_TO_UPDATE);
         }
 
-        if (!updateFrtuserRequest.getEmail().isEmpty()) {
-            if (frtUser.getEmail().equalsIgnoreCase(updateFrtuserRequest.getEmail())) {
+        if (StringUtils.hasLength(request.getPassword())) {
+
+            PasswordValidator.isValidPasswordGlobalUse(request.getPassword());
+
+            if (passwordEncoder.matches(requestedPassword, frtUser.getPassword())) {
+                throw new GeneralException(FrtError.SAME_PASSWORD_UPDATE);
+            }
+
+            frtUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
+        if (StringUtils.hasLength(requestedEmail)) {
+            if (frtUser.getEmail().equalsIgnoreCase(request.getEmail())) {
                 throw new GeneralException(FrtError.SAME_EMAIL_UPDATE);
             }
+            frtUser.setEmail(request.getEmail());
         }
+
+        return frtUser;
     }
 }
