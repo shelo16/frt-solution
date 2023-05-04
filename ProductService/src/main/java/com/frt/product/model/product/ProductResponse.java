@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ProductResponse {
 
+    private Long sellerId;
     private String productName;
     private Integer quantity;
     private BigDecimal price;
@@ -25,6 +26,7 @@ public class ProductResponse {
 
     public static ProductResponse transformEntityToResponse(Product product) {
         return ProductResponse.builder()
+                .sellerId(product.getSellerId())
                 .productName(product.getProductName())
                 .quantity(product.getQuantity())
                 .price(product.getPrice())

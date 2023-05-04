@@ -3,10 +3,13 @@ package com.frt.authservice.persistence.entity;
 import com.frt.authservice.persistence.util.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,6 +36,12 @@ public class FrtUser implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -68,6 +77,12 @@ public class FrtUser implements UserDetails {
     public void setDefaultParameters() {
         this.role = Role.CLIENT;
         this.isActive = true;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.frt.order.service.util;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.List;
+import java.util.function.Function;
 
 @Component
 @Slf4j
@@ -45,12 +47,7 @@ public class JwtUtil {
 
     public Authentication getAuthentication(String token) {
         // Parse the token to extract the claims
-        Claims claims = Jwts
-                .parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        Claims claims = extractAllClaims(token);
 
         // Get the user ID and authorities from the claims
         Long userId = claims.get("id", Long.class);
@@ -64,6 +61,26 @@ public class JwtUtil {
         return new UsernamePasswordAuthenticationToken(userDetails, token, authorities);
     }
 
+    private Claims extractAllClaims(String token) {
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        try {
+
+            Claims claims = extractAllClaims(token);
+            return claimsResolver.apply(claims);
+
+        } catch (ExpiredJwtException e) {
+            log.error(e.getMessage());
+        }
+        return null;
+    }
 
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);

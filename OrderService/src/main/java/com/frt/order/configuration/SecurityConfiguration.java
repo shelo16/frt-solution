@@ -2,6 +2,7 @@ package com.frt.order.configuration;
 
 
 import com.frt.order.configuration.filter.JwtRequestFilter;
+import com.frt.order.persistence.util.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +33,7 @@ public class SecurityConfiguration {
         httpSecurity
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(new AntPathRequestMatcher("/order/**")).authenticated()
+                .requestMatchers(new AntPathRequestMatcher("/order/**")).hasAnyRole(Role.CLIENT.name(), Role.ADMIN.name())
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement()

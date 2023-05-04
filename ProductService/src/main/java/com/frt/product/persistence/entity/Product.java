@@ -24,6 +24,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
+    @Column(name = "seller_id")
+    private Long sellerId;
+
     @Column(name = "product_name")
     private String productName;
 
@@ -46,12 +49,12 @@ public class Product {
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
 }

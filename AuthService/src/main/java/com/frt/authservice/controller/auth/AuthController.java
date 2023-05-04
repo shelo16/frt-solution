@@ -31,7 +31,6 @@ public class AuthController {
         return ResponseEntity
                 .created(location)
                 .body(authResponse);
-
     }
 
     @PostMapping("/login")
