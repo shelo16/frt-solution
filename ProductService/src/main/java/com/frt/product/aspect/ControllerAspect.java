@@ -19,7 +19,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class ControllerAspect {
 
-    @Pointcut("within(com.frt.authservice.controller..*)")
+    @Pointcut("within(com.frt.product.controller..*)")
     public void allControllerMethods() {
     }
 
