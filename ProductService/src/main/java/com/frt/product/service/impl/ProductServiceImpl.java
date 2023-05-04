@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,8 +23,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public ProductResponse findById() {
-        Product product = productRepository.findById(1L)
+    public ProductResponse findById(Long productId) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new GeneralException(FrtError.NO_PRODUCT_FOUND));
 
         return ProductResponse
@@ -31,10 +32,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> filter() {
+    public List<ProductResponse> filter(String productName,
+                                        BigDecimal priceFrom,
+                                        BigDecimal priceTo) {
 
-        Pageable pageable = PageRequest.of(1, 2);
-        Page<Product> productList = productRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Product> productList = productRepository.findAll(pageable, productName, priceFrom, priceTo);
         return productList.stream()
                 .map(ProductResponse::transformEntityToResponse)
                 .collect(Collectors.toList());

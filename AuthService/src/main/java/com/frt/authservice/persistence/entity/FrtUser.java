@@ -23,17 +23,16 @@ public class FrtUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "email")
+    @Column(length = 128)
     private String email;
 
-    @Column(name = "password")
+
     private String password;
+
+    private Boolean isActive;
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @Column(name = "active")
-    private Boolean isActive;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
