@@ -1,5 +1,6 @@
 package com.frt.product.controller;
 
+import com.frt.product.model.product.ProductFilterResponse;
 import com.frt.product.model.product.ProductResponse;
 import com.frt.product.service.ProductService;
 import jakarta.validation.constraints.Min;
@@ -8,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -23,10 +23,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> filterProducts(@RequestParam(required = false) String productName,
+    public ResponseEntity<ProductFilterResponse> filterProducts(@RequestParam(required = false) String productName,
                                                                 @RequestParam(required = false) BigDecimal priceFrom,
-                                                                @RequestParam(required = false) BigDecimal priceTo) {
-        return ResponseEntity.ok(productService.filter(productName, priceFrom, priceTo));
+                                                                @RequestParam(required = false) BigDecimal priceTo,
+                                                                @RequestParam int page,
+                                                                @RequestParam int size) {
+        return ResponseEntity.ok(productService.filter(productName, priceFrom, priceTo, page, size));
     }
 
 
