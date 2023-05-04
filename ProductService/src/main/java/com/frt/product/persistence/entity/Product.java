@@ -31,6 +31,9 @@ public class Product {
 
     private BigDecimal price;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Enumerated(EnumType.STRING)
     private Status status;
