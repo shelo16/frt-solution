@@ -20,7 +20,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.naming.AuthenticationException;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Aspect
@@ -39,24 +38,32 @@ public class ControllerAspect {
     public void allControllerMethods() {
     }
 
-    @Before("allControllerMethods()")
-    @Order(1)
-    public void logIncomingRequestData(JoinPoint joinPoint) {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes != null ? attributes.getRequest() : null;
-        if (request != null) {
-            log.info("================Received Http Request================");
-            log.info("SERVICE : OrderService");
-            log.info("HTTP METHOD = {}", request.getMethod());
-            log.info("URI = {}", request.getRequestURI());
-            log.info("QUERY = {}", request.getQueryString());
-            log.info("CLASS_METHOD = {}", joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-            log.info("ARGS = {}", Arrays.toString(joinPoint.getArgs()));
-            log.info("REQUESTER IP = {}", request.getRemoteAddr());
-        }
+    @Pointcut("orderControllerMethods()")
+    public void beforeOrderControllerMethods() {
     }
 
-    @Before("orderControllerMethods()")
+    @Pointcut("orderControllerMethods()")
+    public void afterOrderControllerMethods() {
+    }
+//
+//    @Before("allControllerMethods()")
+//    @Order(1)
+//    public void logIncomingRequestData(JoinPoint joinPoint) {
+//        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+//        HttpServletRequest request = attributes != null ? attributes.getRequest() : null;
+//        if (request != null) {
+//            log.info("================Received Http Request================");
+//            log.info("SERVICE : OrderService");
+//            log.info("HTTP METHOD = {}", request.getMethod());
+//            log.info("URI = {}", request.getRequestURI());
+//            log.info("QUERY = {}", request.getQueryString());
+//            log.info("CLASS_METHOD = {}", joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+//            log.info("ARGS = {}", Arrays.toString(joinPoint.getArgs()));
+//            log.info("REQUESTER IP = {}", request.getRemoteAddr());
+//        }
+//    }
+
+    @Before("beforeOrderControllerMethods()")
     @Order(2)
     public void validateUserBeforeInvokingOrderOperations(JoinPoint joinPoint) throws AuthenticationException {
 
@@ -102,8 +109,10 @@ public class ControllerAspect {
 
             if ("postOrderRequest".equalsIgnoreCase(paramName)) {
                 postOrderRequest = (PostOrderRequest) parameterValues[i];
-                idUser = postOrderRequest.getUserId();
-                checkValidId(idToken, idUser);
+                if (postOrderRequest != null) {
+                    idUser = postOrderRequest.getUserId();
+                    checkValidId(idToken, idUser);
+                }
             }
         }
     }

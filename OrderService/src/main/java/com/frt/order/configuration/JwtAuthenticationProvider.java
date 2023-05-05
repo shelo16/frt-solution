@@ -27,7 +27,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         try {
             Claims claims = jwtUtil.verifyToken(token);
             String username = claims.getSubject();
-            String role = claims.get("role", String.class);
+            String role = "ROLE_" + claims.get("role", String.class);
             UserDetails userDetails = new User(username, "", List.of(new SimpleGrantedAuthority(role)));
             return new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
         } catch (Exception e) {

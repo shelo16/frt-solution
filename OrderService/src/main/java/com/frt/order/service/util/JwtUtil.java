@@ -51,7 +51,7 @@ public class JwtUtil {
 
         // Get the user ID and authorities from the claims
         Long userId = claims.get("id", Long.class);
-        String role = claims.get("role", String.class);
+        String role = "ROLE_" + claims.get("role", String.class);
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
 
         // Create a UserDetails object from the extracted information

@@ -27,7 +27,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<PostOrderResponse> createOrder(@Valid @RequestBody PostOrderRequest postOrderRequest) {
+    public ResponseEntity<PostOrderResponse> createOrder(@Valid @RequestBody(required = false) PostOrderRequest postOrderRequest) {
         PostOrderResponse postOrderResponse = orderService.createOrder(postOrderRequest);
         URI location = UriLocationBuilder.buildUri("/order/{orderId}", postOrderResponse.getOrderId());
 
