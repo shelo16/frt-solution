@@ -1,6 +1,6 @@
 package com.frt.order.persistence.entity;
 
-import com.frt.order.model.ProductItemDto;
+import com.frt.order.model.product.ProductItemDto;
 import jakarta.persistence.*;
 import lombok.*;
 

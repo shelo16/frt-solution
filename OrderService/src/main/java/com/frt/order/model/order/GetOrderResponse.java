@@ -1,5 +1,6 @@
-package com.frt.order.model;
+package com.frt.order.model.order;
 
+import com.frt.order.model.product.ProductItemDto;
 import com.frt.order.persistence.entity.Order;
 import lombok.*;
 

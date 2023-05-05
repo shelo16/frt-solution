@@ -1,8 +1,8 @@
 package com.frt.order.controller;
 
-import com.frt.order.model.GetOrderResponse;
-import com.frt.order.model.PostOrderRequest;
-import com.frt.order.model.PostOrderResponse;
+import com.frt.order.model.order.GetOrderResponse;
+import com.frt.order.model.order.PostOrderRequest;
+import com.frt.order.model.order.PostOrderResponse;
 import com.frt.order.service.OrderFacade;
 import com.frt.order.service.OrderService;
 import com.frt.order.service.util.UriLocationBuilder;

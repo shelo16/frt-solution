@@ -1,4 +1,4 @@
-package com.frt.order.model;
+package com.frt.order.model.product;
 
 import com.frt.order.persistence.entity.ProductItem;
 import jakarta.validation.constraints.Min;

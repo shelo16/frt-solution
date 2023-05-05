@@ -1,6 +1,6 @@
 package com.frt.order.service.impl.rabbitmq;
 
-import com.frt.order.model.ProductItemDto;
+import com.frt.order.model.product.ProductItemDto;
 import org.springframework.amqp.core.AmqpTemplate;
 
 import java.util.List;

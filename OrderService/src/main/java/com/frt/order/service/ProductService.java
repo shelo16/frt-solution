@@ -1,7 +1,7 @@
 package com.frt.order.service;
 
-import com.frt.order.model.ProductError;
-import com.frt.order.model.ProductItemDto;
+import com.frt.order.model.product.ProductError;
+import com.frt.order.model.product.ProductItemDto;
 
 import java.util.List;
 

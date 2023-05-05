@@ -2,7 +2,7 @@ package com.frt.order.aspect;
 
 import com.frt.order.exception.model.customexception.GeneralException;
 import com.frt.order.exception.util.FrtError;
-import com.frt.order.model.PostOrderRequest;
+import com.frt.order.model.order.PostOrderRequest;
 import com.frt.order.persistence.util.Role;
 import com.frt.order.service.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;

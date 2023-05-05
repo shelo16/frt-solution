@@ -14,7 +14,8 @@ public enum FrtError {
     USER_NOT_AUTHENTICATED("User should be authenticated to access this data", HttpStatus.FORBIDDEN),
     ROLE_NOT_FOUND("Role parameter is invalid", HttpStatus.BAD_REQUEST),
     USER_ACCESS_DENIED("Response data doesn't belong to this user. Access Denied", HttpStatus.FORBIDDEN),
-    NO_ORDER_WITH_GIVEN_PARAMETERS("Can not find order with give parameters", HttpStatus.BAD_REQUEST);
+    NO_ORDER_WITH_GIVEN_PARAMETERS("Can not find order with give parameters", HttpStatus.BAD_REQUEST),
+    USER_NOT_FOUND("User with given parameters is not found", HttpStatus.BAD_REQUEST);
 
     private final String description;
     private final HttpStatus status;

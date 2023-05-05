@@ -1,8 +1,8 @@
 package com.frt.order.service;
 
-import com.frt.order.model.GetOrderResponse;
-import com.frt.order.model.PostOrderRequest;
-import com.frt.order.model.PostOrderResponse;
+import com.frt.order.model.order.GetOrderResponse;
+import com.frt.order.model.order.PostOrderRequest;
+import com.frt.order.model.order.PostOrderResponse;
 
 import java.util.List;
 

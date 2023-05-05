@@ -1,7 +1,7 @@
 package com.frt.order.service.impl.product;
 
-import com.frt.order.model.ProductError;
-import com.frt.order.model.ProductItemDto;
+import com.frt.order.model.product.ProductError;
+import com.frt.order.model.product.ProductItemDto;
 import com.frt.order.service.ProductService;
 import com.frt.order.service.util.UrlEnum;
 import lombok.RequiredArgsConstructor;

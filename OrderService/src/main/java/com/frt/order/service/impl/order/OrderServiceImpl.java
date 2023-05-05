@@ -2,10 +2,10 @@ package com.frt.order.service.impl.order;
 
 import com.frt.order.exception.model.customexception.GeneralException;
 import com.frt.order.exception.util.FrtError;
-import com.frt.order.model.GetOrderResponse;
-import com.frt.order.model.PostOrderRequest;
-import com.frt.order.model.PostOrderResponse;
-import com.frt.order.model.ProductItemDto;
+import com.frt.order.model.order.GetOrderResponse;
+import com.frt.order.model.order.PostOrderRequest;
+import com.frt.order.model.order.PostOrderResponse;
+import com.frt.order.model.product.ProductItemDto;
 import com.frt.order.persistence.entity.Order;
 import com.frt.order.persistence.entity.ProductItem;
 import com.frt.order.persistence.repository.OrderRepository;
@@ -46,6 +46,7 @@ public class OrderServiceImpl implements OrderService {
         return PostOrderResponse.builder()
                 .message(FrtSuccess.CREATED.getDescription())
                 .orderId(savedOrder.getOrderId())
+                .totalPrice(savedOrder.getTotalPrice())
                 .build();
     }
 

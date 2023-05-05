@@ -1,6 +1,8 @@
-package com.frt.order.model;
+package com.frt.order.model.order;
 
 import lombok.*;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -11,4 +13,5 @@ public class PostOrderResponse {
 
     private String message;
     private Long orderId;
+    private BigDecimal totalPrice;
 }

@@ -15,4 +15,14 @@ public class PostNotificationRequest {
     private Long orderId;
     private Long frtUserId;
     private String message;
+
+    public static PostNotificationRequest transformToNotificationRequest(NotificationResponse notificationResponse,
+                                                                         NotificationQueueDto notificationQueueDto) {
+        return PostNotificationRequest.builder()
+                .notifType(notificationResponse.getNotifType())
+                .orderId(notificationQueueDto.getOrderId())
+                .frtUserId(notificationQueueDto.getClientUser().getUserId())
+                .message(notificationResponse.getMessage())
+                .build();
+    }
 }

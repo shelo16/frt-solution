@@ -1,6 +1,8 @@
 package com.frt.notification.service.impl;
 
 import com.frt.notification.model.NotificationQueueDto;
+import com.frt.notification.model.NotificationResponse;
+import com.frt.notification.model.util.NotifType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -8,30 +10,31 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class DummySmsSender {
 
-    public String sendSms(NotificationQueueDto notificationQueueDto) {
+    public NotificationResponse sendSms(NotificationQueueDto notificationQueueDto) {
+
+
+        return buildAndSendSms(notificationQueueDto);
+    }
+
+    NotificationResponse buildAndSendSms(NotificationQueueDto notificationQueueDto) {
+
+        //Send SMS to the client with information for the order – order ID and total price.
         String message = "Hey " +
-                notificationQueueDto.getClientUser().getFirstName() +
-                " \n" +
-                notificationQueueDto.getClientUser().getLastName() +
-                " \n" +
-                "Bought Items: " +
-                "Total Price : " +
-                notificationQueueDto.getTotalPrice() +
-                "\n" +
-                "Product Names : " +
-                notificationQueueDto.getProductNames() +
-                "Will be delivered at : " +
+                notificationQueueDto.getClientUser().getFirstName() + " " + notificationQueueDto.getClientUser().getLastName() + ", \n" +
+                "Here's your order details : " +
+                "Total Price : " + notificationQueueDto.getTotalPrice() + "\n" +
+                "OrderId : " + notificationQueueDto.getOrderId() + "\n" +
+                "Delivery Location : " +
                 notificationQueueDto.getClientUser().getAddress();
 
         log.info("Sent SMS to Client : " + notificationQueueDto.getClientUser().getPhoneNumber());
-        log.info("Email : ");
-        log.info("Hey " + notificationQueueDto.getClientUser().getFirstName() + " " + notificationQueueDto.getClientUser().getLastName());
-        log.info("Bought Items");
-        log.info("Total Price : " + notificationQueueDto.getTotalPrice());
-        log.info("Product Names : " + notificationQueueDto.getProductNames());
-        log.info("Will be delivered at : " + notificationQueueDto.getClientUser().getAddress());
+        log.info("SMS Message : " + message);
+        return NotificationResponse.builder()
+                .userId(notificationQueueDto.getClientUser().getUserId())
+                .message(message)
+                .notifType(NotifType.SMS)
+                .build();
 
-        return message;
     }
 
 }

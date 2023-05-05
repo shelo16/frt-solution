@@ -1,5 +1,6 @@
-package com.frt.notification.model;
+package com.frt.order.model.notification;
 
+import com.frt.order.model.user.FrtUserDto;
 import lombok.*;
 
 import java.math.BigDecimal;

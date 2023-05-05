@@ -1,9 +1,7 @@
 package com.frt.order.service.impl.rabbitmq;
 
-import com.frt.order.model.ProductItemDto;
+import com.frt.order.model.notification.NotificationQueueDto;
 import org.springframework.amqp.core.AmqpTemplate;
-
-import java.util.List;
 
 public class NotificationMessageSender {
 
@@ -19,8 +17,8 @@ public class NotificationMessageSender {
         this.routingKey = routingKey;
     }
 
-    public void send(List<ProductItemDto> productItemDtoList) {
-        rabbitTemplate.convertAndSend(exchangeName, routingKey, productItemDtoList);
+    public void send(NotificationQueueDto notificationQueueDto) {
+        rabbitTemplate.convertAndSend(exchangeName, routingKey, notificationQueueDto);
     }
 
 }

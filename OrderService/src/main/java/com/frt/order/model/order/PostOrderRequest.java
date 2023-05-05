@@ -1,5 +1,7 @@
-package com.frt.order.model;
+package com.frt.order.model.order;
 
+import com.frt.order.model.product.ProductItemDto;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
@@ -12,7 +14,7 @@ import java.util.List;
 @Builder
 public class PostOrderRequest {
 
-    // TODO : validation
+    @Min(1)
     private Long userId;
 
     @NotEmpty(message = "No products selected for order")

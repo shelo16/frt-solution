@@ -1,13 +1,13 @@
 package com.frt.order.service.impl.order;
 
 import com.frt.order.exception.model.customexception.ProductException;
-import com.frt.order.model.PostOrderRequest;
-import com.frt.order.model.PostOrderResponse;
-import com.frt.order.model.ProductError;
+import com.frt.order.model.order.PostOrderRequest;
+import com.frt.order.model.order.PostOrderResponse;
+import com.frt.order.model.product.ProductError;
+import com.frt.order.service.NotificationService;
 import com.frt.order.service.OrderFacade;
 import com.frt.order.service.OrderService;
 import com.frt.order.service.ProductService;
-import com.frt.order.service.impl.rabbitmq.NotificationMessageSender;
 import com.frt.order.service.impl.rabbitmq.ProductMessageSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +19,8 @@ import org.springframework.stereotype.Service;
 public class OrderFacadeImpl implements OrderFacade {
 
     private final ProductMessageSender productMessageSender;
-    private final NotificationMessageSender notificationMessageSender;
+    private final NotificationService notificationService;
     private final OrderService orderService;
-
     private final ProductService productService;
 
     @Override
@@ -30,20 +29,23 @@ public class OrderFacadeImpl implements OrderFacade {
         ProductError productError =
                 productService.checkStock(postOrderRequest.getProductItemDtoList());
         if (!"ok".equalsIgnoreCase(productError.getMessage())) {
-            buildAndThrowError(productError);
+            buildAndThrowException(productError);
         }
 
         // Save Order
         PostOrderResponse postOrderResponse = orderService.createOrder(postOrderRequest);
 
-        // TODO: Send Message to RabbitMQ for Product/Notification/PAD services
+        // Send message to ProductService
+        log.info("Sending message to ProductService");
         productMessageSender.send(postOrderRequest.getProductItemDtoList());
 
+        // Send message to NotificationService
+        notificationService.sendNotificationMessage(postOrderRequest, postOrderResponse);
 
         return postOrderResponse;
     }
 
-    private void buildAndThrowError(ProductError productError) {
+    private void buildAndThrowException(ProductError productError) {
         if (!productError.getProductNameList().isEmpty()) {
             log.error("Quantity is more than available stock");
             throw new ProductException(

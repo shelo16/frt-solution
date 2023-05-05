@@ -1,6 +1,6 @@
 package com.frt.order.controller;
 
-import com.frt.order.model.GetOrderResponse;
+import com.frt.order.model.order.GetOrderResponse;
 import com.frt.order.service.OrderService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
