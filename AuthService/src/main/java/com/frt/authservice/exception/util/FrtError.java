@@ -17,6 +17,7 @@ public enum FrtError {
     USER_NO_CHANGES_DETECTED("User is already in desired state", HttpStatus.CONFLICT),
     NOTHING_TO_UPDATE("No changed fields detected", HttpStatus.BAD_REQUEST),
     BAD_PASSWORD("Password must be between 8 and 20 characters long and contain at least one digit, lowercase letter, uppercase letter, and special character.", HttpStatus.BAD_REQUEST),
+    BAD_PHONE_NUMBER("Phone must be between exactly 9 only digits starting with number above 0", HttpStatus.BAD_REQUEST),
     ROLE_NOT_FOUND("Role parameter is invalid", HttpStatus.BAD_REQUEST),
     SAME_PASSWORD_UPDATE("Password must be different when updating", HttpStatus.CONFLICT),
     SAME_EMAIL_UPDATE("Email must be different when updating", HttpStatus.CONFLICT),

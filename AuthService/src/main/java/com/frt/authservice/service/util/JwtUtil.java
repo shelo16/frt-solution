@@ -48,6 +48,7 @@ public class JwtUtil {
 
     public String generateToken(FrtUser userDetails) {
 
+        log.info("Generating token...");
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("id", userDetails.getUserId());
         extraClaims.put("role", userDetails.getRole());

@@ -76,6 +76,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void decrementStock(List<ProductItemDto> productItemDtoList) {
+        log.info("Decrementing Stock for products : " + productItemDtoList.toString());
         List<Long> productIds = productItemDtoList.stream()
                 .map(ProductItemDto::getProductId)
                 .toList();
@@ -96,6 +97,7 @@ public class ProductServiceImpl implements ProductService {
             product.setQuantity(decreasedQuantity);
         }
 
+        log.info("Saving decreased stocks for products");
         productRepository.saveAll(productEntityList);
     }
 

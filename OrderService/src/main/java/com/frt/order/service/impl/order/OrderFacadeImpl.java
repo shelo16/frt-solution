@@ -7,7 +7,8 @@ import com.frt.order.model.ProductError;
 import com.frt.order.service.OrderFacade;
 import com.frt.order.service.OrderService;
 import com.frt.order.service.ProductService;
-import com.frt.order.service.impl.product.ProductMessageSender;
+import com.frt.order.service.impl.rabbitmq.NotificationMessageSender;
+import com.frt.order.service.impl.rabbitmq.ProductMessageSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class OrderFacadeImpl implements OrderFacade {
 
     private final ProductMessageSender productMessageSender;
+    private final NotificationMessageSender notificationMessageSender;
     private final OrderService orderService;
 
     private final ProductService productService;

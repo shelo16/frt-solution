@@ -10,7 +10,6 @@ import com.frt.order.persistence.entity.Order;
 import com.frt.order.persistence.entity.ProductItem;
 import com.frt.order.persistence.repository.OrderRepository;
 import com.frt.order.service.OrderService;
-import com.frt.order.service.impl.product.ProductMessageSender;
 import com.frt.order.service.util.FrtSuccess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,6 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductMessageSender productMessageSender;
 
     @Override
     public GetOrderResponse getOrderById(Long orderId) {
@@ -42,14 +40,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public PostOrderResponse createOrder(PostOrderRequest postOrderRequest) {
 
-        // TODO check Quantity for order products
         Order order = buildOrder(postOrderRequest);
-
-        // Save Order
         Order savedOrder = orderRepository.save(order);
 
-        // TODO: Send Message to RabbitMQ for Product/Notification/PAD services
-        productMessageSender.send(postOrderRequest.getProductItemDtoList());
         return PostOrderResponse.builder()
                 .message(FrtSuccess.CREATED.getDescription())
                 .orderId(savedOrder.getOrderId())

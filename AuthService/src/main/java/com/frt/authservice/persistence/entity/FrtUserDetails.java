@@ -1,15 +1,13 @@
 package com.frt.authservice.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "frt_user_details")
 public class FrtUserDetails {
@@ -17,6 +15,9 @@ public class FrtUserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userDetailsId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private FrtUser frtUser;
 
     @Column(name = "first_name")
     private String firstName;
@@ -29,8 +30,5 @@ public class FrtUserDetails {
 
     @Column(name = "address")
     private String address;
-
-    @OneToOne
-    private FrtUser frtUser;
 
 }

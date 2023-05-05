@@ -26,6 +26,10 @@ public class FrtUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @OneToOne(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
+    private FrtUserDetails frtUserDetails;
+
     @Column(length = 128)
     private String email;
 

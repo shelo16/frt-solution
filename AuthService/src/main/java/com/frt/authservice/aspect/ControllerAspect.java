@@ -34,7 +34,7 @@ public class ControllerAspect {
     public void userControllerMethods() {
     }
 
-    @Pointcut("within(com.frt.authservice.controller..*)")
+    @Pointcut("within(com.frt.authservice.controller.user..*)")
     public void allControllerMethods() {
     }
 
