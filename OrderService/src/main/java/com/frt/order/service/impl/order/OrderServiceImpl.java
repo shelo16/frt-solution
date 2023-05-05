@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
         Order savedOrder = orderRepository.save(order);
 
         // TODO: Send Message to RabbitMQ for Product/Notification/PAD services
-        productMessageSender.send("Hey Product! decrease the value of stock");
+        productMessageSender.send(postOrderRequest.getProductItemDtoList());
         return PostOrderResponse.builder()
                 .message(FrtSuccess.CREATED.getDescription())
                 .orderId(savedOrder.getOrderId())

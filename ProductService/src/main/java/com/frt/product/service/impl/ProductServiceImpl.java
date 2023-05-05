@@ -3,6 +3,7 @@ package com.frt.product.service.impl;
 import com.frt.product.exception.model.customexception.GeneralException;
 import com.frt.product.exception.util.FrtError;
 import com.frt.product.model.product.ProductFilterResponse;
+import com.frt.product.model.product.ProductItemDto;
 import com.frt.product.model.product.ProductResponse;
 import com.frt.product.persistence.entity.Product;
 import com.frt.product.persistence.repository.ProductRepository;
@@ -11,6 +12,7 @@ import com.frt.product.service.util.PaginationUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +20,13 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -64,5 +70,31 @@ public class ProductServiceImpl implements ProductService {
                 .totalElements(totalElements)
                 .totalPages(totalPages)
                 .build();
+    }
+
+    @Override
+    public void decrementStock(List<ProductItemDto> productItemDtoList) {
+        List<Long> productIds = productItemDtoList.stream()
+                .map(ProductItemDto::getProductId)
+                .toList();
+
+        List<Product> productEntityList = productRepository.findAllByProductIdIn(productIds);
+        Map<Long, Product> productEntityMap = productEntityList.stream()
+                .collect(Collectors.toMap(Product::getProductId, Function.identity()));
+
+        for (ProductItemDto dto : productItemDtoList) {
+            Product product = productEntityMap.get(dto.getProductId());
+
+            int productQuantity = product.getQuantity();
+            int toDecreaseQuantity = dto.getQuantity();
+            int decreasedQuantity = productQuantity - toDecreaseQuantity;
+
+            if (decreasedQuantity < 0) {
+                decreasedQuantity = 0;
+            }
+            product.setQuantity(decreasedQuantity);
+        }
+
+        productRepository.saveAll(productEntityList);
     }
 }

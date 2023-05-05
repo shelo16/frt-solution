@@ -1,8 +1,11 @@
 package com.frt.order.service.impl.rmqp;
 
+import com.frt.order.model.ProductItemDto;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ProductMessageSender {
@@ -19,8 +22,8 @@ public class ProductMessageSender {
         this.routingKey = routingKey;
     }
 
-    public void send(String msg) {
-        rabbitTemplate.convertAndSend(exchangeName, routingKey, msg);
+    public void send(List<ProductItemDto> productItemDtoList) {
+        rabbitTemplate.convertAndSend(exchangeName, routingKey, productItemDtoList);
     }
 
 }

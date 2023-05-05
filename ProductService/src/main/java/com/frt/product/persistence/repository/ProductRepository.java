@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -23,5 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                           @Param("priceFrom") BigDecimal priceFrom,
                           @Param("priceTo") BigDecimal priceTo,
                           @Param("categoryId") Long categoryId);
+
+    List<Product> findAllByProductIdIn(List<Long> productIds);
 
 }
