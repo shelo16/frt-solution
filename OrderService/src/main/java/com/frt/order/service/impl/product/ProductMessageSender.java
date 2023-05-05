@@ -1,4 +1,4 @@
-package com.frt.order.service.impl.rmqp;
+package com.frt.order.service.impl.product;
 
 import com.frt.order.model.ProductItemDto;
 import org.springframework.amqp.core.AmqpTemplate;

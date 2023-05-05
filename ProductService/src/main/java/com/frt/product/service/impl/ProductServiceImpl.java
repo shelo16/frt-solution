@@ -2,6 +2,7 @@ package com.frt.product.service.impl;
 
 import com.frt.product.exception.model.customexception.GeneralException;
 import com.frt.product.exception.util.FrtError;
+import com.frt.product.model.product.ProductError;
 import com.frt.product.model.product.ProductFilterResponse;
 import com.frt.product.model.product.ProductItemDto;
 import com.frt.product.model.product.ProductResponse;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -79,8 +81,7 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
 
         List<Product> productEntityList = productRepository.findAllByProductIdIn(productIds);
-        Map<Long, Product> productEntityMap = productEntityList.stream()
-                .collect(Collectors.toMap(Product::getProductId, Function.identity()));
+        Map<Long, Product> productEntityMap = buildProductEntityMap(productEntityList);
 
         for (ProductItemDto dto : productItemDtoList) {
             Product product = productEntityMap.get(dto.getProductId());
@@ -96,5 +97,43 @@ public class ProductServiceImpl implements ProductService {
         }
 
         productRepository.saveAll(productEntityList);
+    }
+
+    @Override
+    public ProductError validateStock(List<ProductItemDto> productItemDtoList) {
+
+        List<Long> productIds = productItemDtoList.stream()
+                .map(ProductItemDto::getProductId)
+                .toList();
+
+        List<Product> productEntityList = productRepository.findAllByProductIdIn(productIds);
+        Map<Long, Integer> productItemDtoMap = buildProductItemDtoMap(productItemDtoList);
+
+        List<String> productNameList = new ArrayList<>();
+        String message = FrtError.PRODUCT_QUANTITY_INVALID.getDescription();
+        for (Product product : productEntityList) {
+            int toDecreaseQuantity = productItemDtoMap.get(product.getProductId());
+            if (product.getQuantity() < toDecreaseQuantity) {
+                productNameList.add(product.getProductName());
+            }
+        }
+
+        if (productNameList.isEmpty()) {
+            message = "ok";
+        }
+        return ProductError.builder()
+                .message(message)
+                .productNameList(productNameList)
+                .build();
+    }
+
+    private Map<Long, Product> buildProductEntityMap(List<Product> productEntityList) {
+        return productEntityList.stream()
+                .collect(Collectors.toMap(Product::getProductId, Function.identity()));
+    }
+
+    private Map<Long, Integer> buildProductItemDtoMap(List<ProductItemDto> productItemDtoList) {
+        return productItemDtoList.stream()
+                .collect(Collectors.toMap(ProductItemDto::getProductId, ProductItemDto::getQuantity));
     }
 }

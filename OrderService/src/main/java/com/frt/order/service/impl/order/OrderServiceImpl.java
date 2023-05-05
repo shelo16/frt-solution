@@ -10,7 +10,7 @@ import com.frt.order.persistence.entity.Order;
 import com.frt.order.persistence.entity.ProductItem;
 import com.frt.order.persistence.repository.OrderRepository;
 import com.frt.order.service.OrderService;
-import com.frt.order.service.impl.rmqp.ProductMessageSender;
+import com.frt.order.service.impl.product.ProductMessageSender;
 import com.frt.order.service.util.FrtSuccess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

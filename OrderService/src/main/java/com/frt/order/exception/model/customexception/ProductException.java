@@ -9,9 +9,9 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GeneralExceptionResponse {
+public class ProductException extends RuntimeException {
 
-    private String generalMessage;
-    private List<String> errors;
+    private List<String> productNames;
+    private String errorMessage;
 
 }

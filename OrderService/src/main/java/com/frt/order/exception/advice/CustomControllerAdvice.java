@@ -2,6 +2,7 @@ package com.frt.order.exception.advice;
 
 import com.frt.order.exception.model.customexception.GeneralException;
 import com.frt.order.exception.model.customexception.GeneralExceptionResponse;
+import com.frt.order.exception.model.customexception.ProductException;
 import com.frt.order.exception.util.FrtError;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
@@ -28,30 +29,36 @@ public class CustomControllerAdvice {
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(new GeneralExceptionResponse(errors), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new GeneralExceptionResponse(e.getMessage(), errors), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<GeneralExceptionResponse> handleAuthenticationError(BadCredentialsException e) {
         log.error(e.getMessage());
-        return new ResponseEntity<>(new GeneralExceptionResponse(List.of(FrtError.BAD_CREDENTIALS.getDescription())), FrtError.BAD_CREDENTIALS.getStatus());
+        return new ResponseEntity<>(new GeneralExceptionResponse(e.getMessage(), List.of(FrtError.BAD_CREDENTIALS.getDescription())), FrtError.BAD_CREDENTIALS.getStatus());
     }
 
     @ExceptionHandler(JwtException.class)
     public ResponseEntity<GeneralExceptionResponse> handleAuthenticationError(JwtException e) {
         log.error(e.getMessage());
-        return new ResponseEntity<>(new GeneralExceptionResponse(List.of(FrtError.USER_SESSION_EXPIRED.getDescription())), FrtError.BAD_CREDENTIALS.getStatus());
+        return new ResponseEntity<>(new GeneralExceptionResponse(e.getMessage(), List.of(FrtError.USER_SESSION_EXPIRED.getDescription())), FrtError.BAD_CREDENTIALS.getStatus());
     }
 
     @ExceptionHandler(GeneralException.class)
     public ResponseEntity<?> handleCustomException(GeneralException e) {
         log.error(e.getFrtError().getDescription());
-        return new ResponseEntity<>(new GeneralExceptionResponse(List.of(e.getFrtError().getDescription())), e.getFrtError().getStatus());
+        return new ResponseEntity<>(new GeneralExceptionResponse(e.getMessage(), List.of(e.getFrtError().getDescription())), e.getFrtError().getStatus());
+    }
+
+    @ExceptionHandler(ProductException.class)
+    public ResponseEntity<?> handleProductException(ProductException e) {
+        log.error(e.getErrorMessage());
+        return new ResponseEntity<>(new GeneralExceptionResponse(e.getErrorMessage(), e.getProductNames()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGlobalException(Exception e) {
-        return new ResponseEntity<>(new GeneralExceptionResponse(List.of(e.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new GeneralExceptionResponse(e.getMessage(), List.of(e.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

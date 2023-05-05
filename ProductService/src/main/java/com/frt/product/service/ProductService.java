@@ -1,5 +1,6 @@
 package com.frt.product.service;
 
+import com.frt.product.model.product.ProductError;
 import com.frt.product.model.product.ProductFilterResponse;
 import com.frt.product.model.product.ProductItemDto;
 import com.frt.product.model.product.ProductResponse;
@@ -14,4 +15,6 @@ public interface ProductService {
     ProductFilterResponse filter(String productName, BigDecimal priceFrom, BigDecimal priceTo, Long categoryId, int page, int size);
 
     void decrementStock(List<ProductItemDto> productItemDtoList);
+
+    ProductError validateStock(List<ProductItemDto> productItemDtoList);
 }

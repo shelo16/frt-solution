@@ -3,6 +3,7 @@ package com.frt.order.controller;
 import com.frt.order.model.GetOrderResponse;
 import com.frt.order.model.PostOrderRequest;
 import com.frt.order.model.PostOrderResponse;
+import com.frt.order.service.OrderFacade;
 import com.frt.order.service.OrderService;
 import com.frt.order.service.util.UriLocationBuilder;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import java.net.URI;
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderFacade orderFacade;
 
     @GetMapping("/{orderId}")
     public ResponseEntity<GetOrderResponse> getOrder(@Valid @PathVariable @Min(1) Long orderId) {
@@ -28,7 +30,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<PostOrderResponse> createOrder(@Valid @RequestBody(required = false) PostOrderRequest postOrderRequest) {
-        PostOrderResponse postOrderResponse = orderService.createOrder(postOrderRequest);
+        PostOrderResponse postOrderResponse = orderFacade.createOrder(postOrderRequest);
         URI location = UriLocationBuilder.buildUri("/order/{orderId}", postOrderResponse.getOrderId());
 
         return ResponseEntity
