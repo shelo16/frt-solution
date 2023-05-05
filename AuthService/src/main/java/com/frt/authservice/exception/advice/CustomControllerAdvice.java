@@ -49,9 +49,9 @@ public class CustomControllerAdvice {
         return new ResponseEntity<>(new GeneralExceptionResponse(List.of(e.getFrtError().getDescription())), e.getFrtError().getStatus());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleGlobalException(Exception e) {
-        return new ResponseEntity<>(new GeneralExceptionResponse(List.of(e.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<?> handleGlobalException(Exception e) {
+//        return new ResponseEntity<>(new GeneralExceptionResponse(List.of(e.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
 }

@@ -19,7 +19,7 @@ public class PhoneValidator implements ConstraintValidator<ValidPhone, String> {
     public boolean isValid(String phoneNumber, ConstraintValidatorContext context) {
         boolean isValid = phoneNumber != null && phoneNumber.matches(PHONE_NUMBER_REGEX);
         if (!isValid) {
-            throw new GeneralException(FrtError.BAD_PASSWORD);
+            throw new GeneralException(FrtError.BAD_PHONE_NUMBER);
         }
         return true;
     }

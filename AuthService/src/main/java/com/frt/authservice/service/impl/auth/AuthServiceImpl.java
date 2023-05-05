@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
+    @Transactional
     public AuthResponse register(RegistrationRequest registrationRequest) {
 
         log.info("Validating if user doesn't exit");
@@ -41,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
         FrtUser frtUser = buildUser(registrationRequest);
         FrtUserDetails frtUserDetails = buildUserDetails(registrationRequest, frtUser);
         frtUser.setFrtUserDetails(frtUserDetails);
-        FrtUser savedUser = frtUserRepository.save(buildUser(registrationRequest));
+        FrtUser savedUser = frtUserRepository.save(frtUser);
 
         var token = jwtUtil.generateToken(savedUser);
 

@@ -104,6 +104,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductError validateStock(List<ProductItemDto> productItemDtoList) {
 
+        log.info("Validating Stock for items : " + productItemDtoList.toString());
         List<Long> productIds = productItemDtoList.stream()
                 .map(ProductItemDto::getProductId)
                 .toList();

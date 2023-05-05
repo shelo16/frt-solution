@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class NotificationFacadeImpl implements NotificationFacade {
 
-    private DummyMailService dummyMailService;
+    private final DummyMailService dummyMailService;
 
-    private DummySmsSender dummySmsSender;
+    private final DummySmsSender dummySmsSender;
 
-    private NotificationService notificationService;
+    private final NotificationService notificationService;
 
     @Override
     public void processQueueMessage(NotificationQueueDto notificationQueueDto) {
