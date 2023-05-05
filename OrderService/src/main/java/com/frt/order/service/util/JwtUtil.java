@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -52,7 +52,7 @@ public class JwtUtil {
         // Get the user ID and authorities from the claims
         Long userId = claims.get("id", Long.class);
         String role = claims.get("role", String.class);
-        List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(role);
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
 
         // Create a UserDetails object from the extracted information
         UserDetails userDetails = new User(userId.toString(), "", authorities);
