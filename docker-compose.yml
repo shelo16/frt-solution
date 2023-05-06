@@ -7,13 +7,26 @@ services:
     container_name: postgres-instance
     hostname: postgres-instance
     volumes:
-      - ./db-data:/var/lib/postgresql/data
+      - ./db-data:/var/lib/postgresql/db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root1234
       POSTGRES_DB: frt
     ports:
       - "5432:5432"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: frt-rabbitmq
+    hostname: my-rabbit
+    environment:
+      RABBITMQ_DEFAULT_USER: username
+      RABBITMQ_DEFAULT_PASS: password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./rabbitmq-data/:/var/lib/rabbitmq/
 
   auth-service:
     container_name: auth_container
@@ -45,5 +58,74 @@ services:
       RABBITMQ_PRODUCT_QUEUE_NAME: productQueueName
       RABBITMQ_PRODUCT_EXCHANGE_NAME: productExchangeName
       RABBITMQ_PRODUCT_ROUTING_KEY: productRoutingKey
+      JWT_SECRET_KEY: 645367566B59703373367638792F423F4528482B4D6251655468576D5A713474
+    depends_on:
+      - postgres-instance
+
+
+  notification:
+    container_name: notification_container
+    hostname: notification_service
+    build: ./notification
+    ports:
+      - "8083:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-instance:5432/frt
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root1234
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_USERNAME: username
+      SPRING_RABBITMQ_PASSWORD: password
+      RABBITMQ_NOTIFICATION_QUEUE_NAME: notificationQueueName
+      RABBITMQ_PRODUCT_EXCHANGE_NAME: notificationExchangeName
+      RABBITMQ_PRODUCT_ROUTING_KEY: notificationRoutingKey
+      JWT_SECRET_KEY: 645367566B59703373367638792F423F4528482B4D6251655468576D5A713474
+    depends_on:
+      - postgres-instance
+
+  pad:
+    container_name: pad_container
+    hostname: pad_service
+    build: ./pad
+    ports:
+      - "8084:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-instance:5432/frt
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root1234
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_USERNAME: username
+      SPRING_RABBITMQ_PASSWORD: password
+      RABBITMQ_PAD_QUEUE_NAME: padQueueName
+      RABBITMQ_PRODUCT_EXCHANGE_NAME: padExchangeName
+      RABBITMQ_PRODUCT_ROUTING_KEY: padRoutingKey
+      JWT_SECRET_KEY: 645367566B59703373367638792F423F4528482B4D6251655468576D5A713474
+    depends_on:
+      - postgres-instance
+
+  order:
+    container_name: order_container
+    hostname: order_service
+    build: ./order
+    ports:
+      - "8082:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-instance:5432/frt
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root1234
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_USERNAME: username
+      SPRING_RABBITMQ_PASSWORD: password
+      RABBITMQ_NOTIFICATION_QUEUE_NAME: notificationQueueName
+      RABBITMQ_NOTIFICATION_ROUTING_KEY: notificationRoutingKey
+      RABBITMQ_NOTIFICATION_EXCHANGE_NAME: notificationExchangeName
+      RABBITMQ_PAD_QUEUE_NAME: padQueueName
+      RABBITMQ_PAD_ROUTING_KEY: padRoutingKey
+      RABBITMQ_PAD_EXCHANGE_NAME: padExchangeName
+      RABBITMQ_PRODUCT_QUEUE_NAME: productQueueName
+      RABBITMQ_PRODUCT_ROUTING_KEY: productRoutingKey
+      RABBITMQ_PRODUCT_EXCHANGE_NAME: productExchangeName
+      JWT_SECRET_KEY: 645367566B59703373367638792F423F4528482B4D6251655468576D5A713474
     depends_on:
       - postgres-instance
