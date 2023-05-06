@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  postgres-instance:
+    image: postgres:13.6-bullseye
+    restart: always
+    container_name: postgres-instance
+    hostname: postgres-instance
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root1234
+      POSTGRES_DB: frt
+    ports:
+      - "5432:5432"
+
+  auth-service:
+    container_name: auth_container
+    hostname: auth_service
+    build: ./AuthService
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-instance:5432/frt
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root1234
+    depends_on:
+      - postgres-instance
+
+  product:
+    container_name: product_container
+    hostname: product_service
+    build: ./ProductService
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-instance:5432/frt
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root1234
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: username
+      SPRING_RABBITMQ_PASSWORD: password
+      RABBITMQ_PRODUCT_QUEUE_NAME: productQueueName
+      RABBITMQ_PRODUCT_EXCHANGE_NAME: productExchangeName
+      RABBITMQ_PRODUCT_ROUTING_KEY: productRoutingKey
+    depends_on:
+      - postgres-instance
