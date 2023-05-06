@@ -1,6 +1,6 @@
-# Microservices Demo
+# FRT Task solution Demo
 
-This is a demo application consisting of 5 microservices built with Spring Boot, Java 17, Gradle, RabbitMQ, and PostgreSQL.
+This is a solution for FRT task. Application consists of 5 microservices built with Spring Boot, Java 17, Gradle, RabbitMQ, and PostgreSQL.
 
 ## Services and Swagger Links
 
