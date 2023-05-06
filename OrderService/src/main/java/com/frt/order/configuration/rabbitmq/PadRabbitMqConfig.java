@@ -14,13 +14,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class PadRabbitMqConfig {
 
-    @Value("${rabbitmq.pad-exchange-name}")
+    @Value("${rabbitmq.pad.exchange.name}")
     private String exchangeName;
 
-    @Value("${rabbitmq.pad-queue-name}")
+    @Value("${rabbitmq.pad.queue.name}")
     private String queueName;
 
-    @Value("${rabbitmq.pad-routing-key}")
+    @Value("${rabbitmq.pad.routing.key}")
     private String routingKey;
 
     @Bean

@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.AmqpHeaders;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ public class RabbitMQListener {
 
     private final ProductService productService;
 
-    @RabbitListener(queues = "${rabbitmq.product-queue-name}")
+    @RabbitListener(queues = "${rabbitmq.product.queue.name}")
     public void processMessage(List<ProductItemDto> productItemDtoList,
                                Channel channel,
                                @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {

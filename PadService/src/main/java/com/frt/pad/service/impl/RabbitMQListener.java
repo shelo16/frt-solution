@@ -1,6 +1,5 @@
 package com.frt.pad.service.impl;
 
-import com.frt.pad.configuration.rabbitmq.RabbitMQConfig;
 import com.frt.pad.service.OrderDeliveryService;
 import com.rabbitmq.client.Channel;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ public class RabbitMQListener {
 
     private final OrderDeliveryService orderDeliveryService;
 
-    @RabbitListener(queues = "${RABBITMQ_PAD_QUEUE_NAME}")
+    @RabbitListener(queues = "${rabbitmq.pad.queue.name}")
     public void processMessage(Long orderId,
                                Channel channel,
                                @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
