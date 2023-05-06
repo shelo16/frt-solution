@@ -1,11 +1,9 @@
 package com.frt.product.persistence.entity;
 
+import com.frt.product.model.product.PostProductRequest;
 import com.frt.product.persistence.util.Status;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "product")
 public class Product {
@@ -49,12 +48,23 @@ public class Product {
 
     @PrePersist
     protected void onCreate() {
+        this.status = Status.ACTIVE;
         this.createdAt = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public static Product transformRequestToEntity(PostProductRequest postProductRequest, Category category) {
+        return Product.builder()
+                .category(category)
+                .sellerId(postProductRequest.getSellerId())
+                .productName(postProductRequest.getProductName())
+                .quantity(postProductRequest.getQuantity())
+                .price(postProductRequest.getPrice())
+                .build();
     }
 
 }

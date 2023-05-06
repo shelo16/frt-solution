@@ -39,7 +39,7 @@ public class SecurityConfiguration {
         httpSecurity.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers(new AntPathRequestMatcher("/pad/**")).authenticated()
-                .requestMatchers(new AntPathRequestMatcher("/pad/admin")).hasRole(Role.ADMIN.name())
+                .requestMatchers(new AntPathRequestMatcher("/pad/seller")).hasRole(Role.ADMIN.name())
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement()

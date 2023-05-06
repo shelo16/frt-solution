@@ -2,11 +2,10 @@ package com.frt.product.service.impl;
 
 import com.frt.product.exception.model.customexception.GeneralException;
 import com.frt.product.exception.util.FrtError;
-import com.frt.product.model.product.ProductError;
-import com.frt.product.model.product.ProductFilterResponse;
-import com.frt.product.model.product.ProductItemDto;
-import com.frt.product.model.product.ProductResponse;
+import com.frt.product.model.product.*;
+import com.frt.product.persistence.entity.Category;
 import com.frt.product.persistence.entity.Product;
+import com.frt.product.persistence.repository.CategoryRepository;
 import com.frt.product.persistence.repository.ProductRepository;
 import com.frt.product.service.ProductService;
 import com.frt.product.service.util.PaginationUtil;
@@ -35,6 +34,8 @@ public class ProductServiceImpl implements ProductService {
     private final HttpServletResponse response;
     private final HttpServletRequest request;
     private final PaginationUtil paginationUtil;
+
+    private final CategoryRepository categoryRepository;
 
     @Override
     public ProductResponse findById(Long productId) {
@@ -127,6 +128,19 @@ public class ProductServiceImpl implements ProductService {
         return ProductError.builder()
                 .message(message)
                 .productNameList(productNameList)
+                .build();
+    }
+
+    @Override
+    public PostProductResponse saveProduct(PostProductRequest postProductRequest) {
+        Category category = categoryRepository
+                .findById(postProductRequest.getCategoryId())
+                .orElseThrow(() -> new GeneralException(FrtError.NO_CATEGORY_FOUND));
+        Product product = Product.transformRequestToEntity(postProductRequest, category);
+        Product savedProduct = productRepository.save(product);
+        return PostProductResponse.builder()
+                .productId(savedProduct.getProductId())
+                .message("Created")
                 .build();
     }
 

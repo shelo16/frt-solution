@@ -1,4 +1,4 @@
-package com.frt.order.service.util;
+package com.frt.product.service.util;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum UrlEnum {
 
     SCHEME("http://"),
-    PRODUCT_STOCK_ENDPOINT("/order"),
-    PRODUCT_BASE_URL("localhost:8082");
+    PRODUCT_STOCK_ENDPOINT("/products"),
+    PRODUCT_BASE_URL("localhost:8081");
 
     private final String description;
 }

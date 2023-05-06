@@ -80,6 +80,11 @@ public class FrtUser implements UserDetails {
     @PrePersist
     public void setDefaultParameters() {
         this.role = Role.CLIENT;
+        if (this.email.contains("seller")) {
+            this.role = Role.ADMIN;
+        } else if (this.email.contains("seller")) {
+            this.role = Role.SELLER;
+        }
         this.isActive = true;
         this.createdAt = LocalDateTime.now();
     }

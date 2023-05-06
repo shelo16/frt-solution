@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/admin")
+@RequestMapping("/user/seller")
 public class UserAdminController {
 
     private final FrtUserService frtUserService;

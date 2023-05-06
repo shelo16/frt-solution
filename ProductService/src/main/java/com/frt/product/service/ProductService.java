@@ -1,9 +1,6 @@
 package com.frt.product.service;
 
-import com.frt.product.model.product.ProductError;
-import com.frt.product.model.product.ProductFilterResponse;
-import com.frt.product.model.product.ProductItemDto;
-import com.frt.product.model.product.ProductResponse;
+import com.frt.product.model.product.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,4 +14,6 @@ public interface ProductService {
     void decrementStock(List<ProductItemDto> productItemDtoList);
 
     ProductError validateStock(List<ProductItemDto> productItemDtoList);
+
+    PostProductResponse saveProduct(PostProductRequest postProductRequest);
 }

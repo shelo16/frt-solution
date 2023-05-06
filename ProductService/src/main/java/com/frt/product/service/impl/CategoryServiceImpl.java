@@ -1,6 +1,7 @@
 package com.frt.product.service.impl;
 
 import com.frt.product.model.category.CategoryResponse;
+import com.frt.product.persistence.entity.Category;
 import com.frt.product.persistence.repository.CategoryRepository;
 import com.frt.product.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,14 @@ public class CategoryServiceImpl implements CategoryService {
                 .stream()
                 .map(CategoryResponse::transformEntityToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long saveCategory(String categoryName) {
+        Category category = Category.builder()
+                .categoryName(categoryName)
+                .build();
+
+        return repository.save(category).getCategoryId();
     }
 }

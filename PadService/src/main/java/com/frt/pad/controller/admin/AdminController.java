@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/pad/admin")
+@RequestMapping("/pad/seller")
 public class AdminController {
 
     private final OrderDeliveryService orderDeliveryService;

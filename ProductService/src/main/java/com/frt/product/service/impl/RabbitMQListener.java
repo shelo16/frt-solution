@@ -1,6 +1,5 @@
 package com.frt.product.service.impl;
 
-import com.frt.product.configuration.rabbitmq.RabbitMQConfig;
 import com.frt.product.model.product.ProductItemDto;
 import com.frt.product.service.ProductService;
 import com.rabbitmq.client.Channel;
@@ -8,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.AmqpHeaders;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,10 @@ public class RabbitMQListener {
 
     private final ProductService productService;
 
-    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
+    @Value("${rabbitmq.product-queue-name}")
+    private static final String PRODUCT_QUEUE_NAME = "";
+
+    @RabbitListener(queues = PRODUCT_QUEUE_NAME)
     public void processMessage(List<ProductItemDto> productItemDtoList,
                                Channel channel,
                                @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
