@@ -5,30 +5,35 @@ import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFacto
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
 
-    //TODO : add to app.properties
-    public static final String EXCHANGE_NAME = "notificationExchange";
-    public static final String QUEUE_NAME = "notificationQueue";
-    public static final String ROUTING_KEY = "notificationRoutingKey";
+    @Value("${rabbitmq.notification-exchange-name}")
+    private String exchangeName;
+
+    @Value("${rabbitmq.notification-queue-name}")
+    private String queueName;
+
+    @Value("${rabbitmq.notification-routing-key}")
+    private String routingKey;
 
     @Bean
     public Queue productQueue() {
-        return new Queue(QUEUE_NAME, true);
+        return new Queue(queueName, true);
     }
 
     @Bean
     public TopicExchange exchange() {
-        return new TopicExchange(EXCHANGE_NAME);
+        return new TopicExchange(exchangeName);
     }
 
     @Bean
     public Binding binding(Queue productQueue, TopicExchange productExchange) {
-        return BindingBuilder.bind(productQueue).to(productExchange).with(ROUTING_KEY);
+        return BindingBuilder.bind(productQueue).to(productExchange).with(routingKey);
     }
 
     @Bean

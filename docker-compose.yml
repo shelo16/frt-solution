@@ -66,7 +66,7 @@ services:
   notification:
     container_name: notification_container
     hostname: notification_service
-    build: ./notification
+    build: ./NotificationService
     ports:
       - "8083:8080"
     environment:
@@ -74,6 +74,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: root1234
       SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
       SPRING_RABBITMQ_USERNAME: username
       SPRING_RABBITMQ_PASSWORD: password
       RABBITMQ_NOTIFICATION_QUEUE_NAME: notificationQueueName
@@ -86,7 +87,7 @@ services:
   pad:
     container_name: pad_container
     hostname: pad_service
-    build: ./pad
+    build: ./PadService
     ports:
       - "8084:8080"
     environment:
@@ -94,6 +95,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: root1234
       SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
       SPRING_RABBITMQ_USERNAME: username
       SPRING_RABBITMQ_PASSWORD: password
       RABBITMQ_PAD_QUEUE_NAME: padQueueName
@@ -106,7 +108,7 @@ services:
   order:
     container_name: order_container
     hostname: order_service
-    build: ./order
+    build: ./OrderService
     ports:
       - "8082:8080"
     environment:
@@ -115,6 +117,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: root1234
       SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
       SPRING_RABBITMQ_USERNAME: username
       SPRING_RABBITMQ_PASSWORD: password
       RABBITMQ_NOTIFICATION_QUEUE_NAME: notificationQueueName
