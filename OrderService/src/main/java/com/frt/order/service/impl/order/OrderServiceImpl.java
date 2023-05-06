@@ -1,7 +1,5 @@
 package com.frt.order.service.impl.order;
 
-import com.frt.order.exception.model.customexception.GeneralException;
-import com.frt.order.exception.util.FrtError;
 import com.frt.order.model.order.GetOrderResponse;
 import com.frt.order.model.order.PostOrderRequest;
 import com.frt.order.model.order.PostOrderResponse;
@@ -24,13 +22,6 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    public GetOrderResponse getOrderById(Long orderId) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new GeneralException(FrtError.NO_ORDER_WITH_GIVEN_PARAMETERS));
-        return GetOrderResponse.transformEntityToResponse(order);
-    }
-
-    @Override
     public List<GetOrderResponse> getAllUserOrders(Long clientId) {
         return orderRepository.findByClientId(clientId).stream()
                 .map(GetOrderResponse::transformEntityToResponse)
@@ -38,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PostOrderResponse createOrder(PostOrderRequest postOrderRequest) {
+    public PostOrderResponse saveOrder(PostOrderRequest postOrderRequest) {
 
         Order order = buildOrder(postOrderRequest);
         Order savedOrder = orderRepository.save(order);
@@ -47,7 +38,9 @@ public class OrderServiceImpl implements OrderService {
                 .message(FrtSuccess.CREATED.getDescription())
                 .orderId(savedOrder.getOrderId())
                 .totalPrice(savedOrder.getTotalPrice())
+                .clientId(postOrderRequest.getUserId())
                 .build();
+
     }
 
     private Order buildOrder(PostOrderRequest postOrderRequest) {

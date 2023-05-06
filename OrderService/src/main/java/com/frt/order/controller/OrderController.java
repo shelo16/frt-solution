@@ -1,16 +1,16 @@
 package com.frt.order.controller;
 
-import com.frt.order.model.order.GetOrderResponse;
 import com.frt.order.model.order.PostOrderRequest;
 import com.frt.order.model.order.PostOrderResponse;
 import com.frt.order.service.OrderFacade;
-import com.frt.order.service.OrderService;
 import com.frt.order.service.util.UriLocationBuilder;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
@@ -19,19 +19,12 @@ import java.net.URI;
 @RequestMapping("/order")
 public class OrderController {
 
-    private final OrderService orderService;
     private final OrderFacade orderFacade;
-
-    @GetMapping("/{orderId}")
-    public ResponseEntity<GetOrderResponse> getOrder(@Valid @PathVariable @Min(1) Long orderId) {
-
-        return ResponseEntity.ok(orderService.getOrderById(orderId));
-    }
 
     @PostMapping
     public ResponseEntity<PostOrderResponse> createOrder(@Valid @RequestBody(required = false) PostOrderRequest postOrderRequest) {
         PostOrderResponse postOrderResponse = orderFacade.createOrder(postOrderRequest);
-        URI location = UriLocationBuilder.buildUri("/order/{orderId}", postOrderResponse.getOrderId());
+        URI location = UriLocationBuilder.buildUri("/order/user/{clientId}", postOrderResponse.getClientId());
 
         return ResponseEntity
                 .created(location)

@@ -8,6 +8,7 @@ import com.frt.order.service.NotificationService;
 import com.frt.order.service.OrderFacade;
 import com.frt.order.service.OrderService;
 import com.frt.order.service.ProductService;
+import com.frt.order.service.impl.rabbitmq.PadMessageSender;
 import com.frt.order.service.impl.rabbitmq.ProductMessageSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class OrderFacadeImpl implements OrderFacade {
 
     private final ProductMessageSender productMessageSender;
+    private final PadMessageSender padMessageSender;
     private final NotificationService notificationService;
     private final OrderService orderService;
     private final ProductService productService;
@@ -28,19 +30,25 @@ public class OrderFacadeImpl implements OrderFacade {
 
         ProductError productError =
                 productService.checkStock(postOrderRequest.getProductItemDtoList());
+
         if (!"ok".equalsIgnoreCase(productError.getMessage())) {
             buildAndThrowException(productError);
         }
 
         // Save Order
-        PostOrderResponse postOrderResponse = orderService.createOrder(postOrderRequest);
+        PostOrderResponse postOrderResponse = orderService.saveOrder(postOrderRequest);
 
         // Send message to ProductService
         log.info("Sending message to ProductService");
         productMessageSender.send(postOrderRequest.getProductItemDtoList());
 
         // Send message to NotificationService
+        log.info("Sending message to NotificationService");
         notificationService.sendNotificationMessage(postOrderRequest, postOrderResponse);
+
+        // Send message to PadService
+        log.info("Sending message to PadService");
+        padMessageSender.send(postOrderResponse.getOrderId());
 
         return postOrderResponse;
     }

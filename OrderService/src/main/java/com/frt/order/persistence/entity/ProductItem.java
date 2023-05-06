@@ -1,5 +1,6 @@
 package com.frt.order.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.frt.order.model.product.ProductItemDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,8 +20,9 @@ public class ProductItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productItemId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "order_id")
+    @JsonBackReference
     private Order order;
 
     @Column(name = "seller_id")

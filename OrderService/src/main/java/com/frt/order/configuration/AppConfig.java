@@ -1,4 +1,4 @@
-package com.frt.order.configuration.filter;
+package com.frt.order.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

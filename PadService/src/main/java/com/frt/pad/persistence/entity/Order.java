@@ -1,6 +1,5 @@
-package com.frt.order.persistence.entity;
+package com.frt.pad.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,7 +30,6 @@ public class Order {
     @JoinTable(name = "order_product",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_item_id"))
-    @JsonManagedReference
     private List<ProductItem> productItemList;
 
     private BigDecimal totalPrice;

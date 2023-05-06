@@ -1,0 +1,7 @@
+package com.frt.pad.persistence.repository;
+
+import com.frt.pad.persistence.entity.Order;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface OrderRepository extends JpaRepository<Order, Long> {
+}
