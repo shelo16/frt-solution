@@ -27,12 +27,12 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(exchangeName);
+    public DirectExchange exchange() {
+        return new DirectExchange(exchangeName);
     }
 
     @Bean
-    public Binding binding(Queue productQueue, TopicExchange productExchange) {
+    public Binding binding(Queue productQueue, DirectExchange productExchange) {
         return BindingBuilder.bind(productQueue).to(productExchange).with(routingKey);
     }
 

@@ -17,7 +17,6 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.product-queue-name}")
     private String QUEUE_NAME;
     @Value("${rabbitmq.product-routing-key}")
-
     private String ROUTING_KEY;
 
     @Bean
@@ -26,13 +25,13 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(EXCHANGE_NAME);
+    public DirectExchange exchange() {
+        return new DirectExchange(EXCHANGE_NAME);
     }
 
     @Bean
-    public Binding binding(Queue productQueue, TopicExchange productExchange) {
-        return BindingBuilder.bind(productQueue).to(productExchange).with(ROUTING_KEY);
+    public Binding binding(Queue productQueue, DirectExchange exchange) {
+        return BindingBuilder.bind(productQueue).to(exchange).with(ROUTING_KEY);
     }
 
     @Bean

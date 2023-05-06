@@ -21,10 +21,7 @@ public class RabbitMQListener {
 
     private final ProductService productService;
 
-    @Value("${rabbitmq.product-queue-name}")
-    private static final String PRODUCT_QUEUE_NAME = "";
-
-    @RabbitListener(queues = PRODUCT_QUEUE_NAME)
+    @RabbitListener(queues = "${rabbitmq.product-queue-name}")
     public void processMessage(List<ProductItemDto> productItemDtoList,
                                Channel channel,
                                @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {

@@ -20,10 +20,7 @@ public class RabbitMQListener {
 
     private final NotificationFacade notificationFacade;
 
-    @Value("${rabbitmq.notification-queue-name}")
-    private static final String NOTIFICATION_QUEUE_NAME = "";
-
-    @RabbitListener(queues = NOTIFICATION_QUEUE_NAME)
+    @RabbitListener(queues = "${rabbitmq.notification-queue-name}")
     public void processMessage(NotificationQueueDto notificationQueueDto,
                                Channel channel,
                                @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {

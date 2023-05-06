@@ -34,12 +34,12 @@ public class ProductRabbitMqConfig {
     }
 
     @Bean
-    public TopicExchange productExchange() {
-        return new TopicExchange(exchangeName);
+    public DirectExchange productExchange() {
+        return new DirectExchange(exchangeName);
     }
 
     @Bean
-    public Binding productBinding(Queue productQueue, TopicExchange productExchange) {
+    public Binding productBinding(Queue productQueue, DirectExchange productExchange) {
         return BindingBuilder.bind(productQueue).to(productExchange).with(routingKey);
     }
 

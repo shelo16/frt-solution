@@ -29,17 +29,17 @@ public class PadRabbitMqConfig {
     }
 
     @Bean
-    public Queue ppadQueue() {
+    public Queue padQueue() {
         return new Queue(queueName);
     }
 
     @Bean
-    public TopicExchange padExchange() {
-        return new TopicExchange(exchangeName);
+    public DirectExchange padExchange() {
+        return new DirectExchange(exchangeName);
     }
 
     @Bean
-    public Binding padBinding(Queue productQueue, TopicExchange productExchange) {
+    public Binding padBinding(Queue productQueue, DirectExchange productExchange) {
         return BindingBuilder.bind(productQueue).to(productExchange).with(routingKey);
     }
 

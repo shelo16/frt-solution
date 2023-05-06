@@ -19,7 +19,7 @@ public class RabbitMQListener {
 
     private final OrderDeliveryService orderDeliveryService;
 
-    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
+    @RabbitListener(queues = "${RABBITMQ_PAD_QUEUE_NAME}")
     public void processMessage(Long orderId,
                                Channel channel,
                                @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {

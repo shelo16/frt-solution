@@ -5,16 +5,19 @@ import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFacto
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
 
-    //TODO : add to app.properties
-    public static final String EXCHANGE_NAME = "padExchange";
-    public static final String QUEUE_NAME = "padQueue";
-    public static final String ROUTING_KEY = "padRoutingKey";
+    @Value("${spring.pad.exchange.name}")
+    private String EXCHANGE_NAME;
+    @Value("${spring.pad.queue.name}")
+    private String QUEUE_NAME;
+    @Value("${spring.pad.routing.key}")
+    private String ROUTING_KEY;
 
     @Bean
     public Queue padQueue() {
@@ -22,12 +25,12 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(EXCHANGE_NAME);
+    public DirectExchange exchange() {
+        return new DirectExchange(EXCHANGE_NAME);
     }
 
     @Bean
-    public Binding binding(Queue productQueue, TopicExchange productExchange) {
+    public Binding binding(Queue productQueue, DirectExchange productExchange) {
         return BindingBuilder.bind(productQueue).to(productExchange).with(ROUTING_KEY);
     }
 

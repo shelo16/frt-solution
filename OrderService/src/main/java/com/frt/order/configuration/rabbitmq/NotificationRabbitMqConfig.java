@@ -34,12 +34,12 @@ public class NotificationRabbitMqConfig {
     }
 
     @Bean
-    public TopicExchange notificationExchange() {
-        return new TopicExchange(exchangeName);
+    public DirectExchange notificationExchange() {
+        return new DirectExchange(exchangeName);
     }
 
     @Bean
-    public Binding notificationBinding(Queue notificationQueue, TopicExchange notificationExchange) {
+    public Binding notificationBinding(Queue notificationQueue, DirectExchange notificationExchange) {
         return BindingBuilder.bind(notificationQueue).to(notificationExchange).with(routingKey);
     }
 
