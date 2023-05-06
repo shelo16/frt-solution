@@ -79,8 +79,9 @@ public class FrtUser implements UserDetails {
 
     @PrePersist
     public void setDefaultParameters() {
+        // FOR TESTING PURPOSES ONLY
         this.role = Role.CLIENT;
-        if (this.email.contains("seller")) {
+        if (this.email.contains("admin")) {
             this.role = Role.ADMIN;
         } else if (this.email.contains("seller")) {
             this.role = Role.SELLER;

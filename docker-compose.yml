@@ -38,6 +38,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-instance:5432/frt
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: root1234
+      JWT_SECRET_KEY: 645367566B59703373367638792F423F4528482B4D6251655468576D5A713474
     depends_on:
       - postgres-instance
       - rabbitmq

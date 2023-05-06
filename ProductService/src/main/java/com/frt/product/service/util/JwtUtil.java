@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,7 +24,8 @@ import java.util.function.Function;
 @Slf4j
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "${jwt.secret.key}";
+    @Value("${jwt.secret.key}")
+    private String SECRET_KEY;
 
     /**
      * Verifies the given JWT token and returns its claims if the token is valid.
