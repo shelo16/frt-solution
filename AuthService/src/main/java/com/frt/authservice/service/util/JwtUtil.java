@@ -18,8 +18,7 @@ import java.util.function.Function;
 @Slf4j
 public class JwtUtil {
 
-    // TODO move to env variables
-    private static final String SECRET_KEY = "645367566B59703373367638792F423F4528482B4D6251655468576D5A713474";
+    private static final String SECRET_KEY = "${jwt.secret.key}";
 
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
